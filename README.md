@@ -1,59 +1,122 @@
 # ☁️ Cloud-Ink: Interactive Virtual Smart Board
 
-**Cloud-Ink** turns a simple webcam into a gesture-controlled smart board that understands hand movement, voice, and intent — all without touching the screen.  
-It’s designed for both **interactive classrooms** and **assistive communication**, where users can write, erase, or point to tiles like “Help,” “Water,” or “Pain,” and hear their intent spoken aloud.
+**Cloud-Ink** transforms a simple webcam into a gesture-controlled virtual smart board.
+Users can write, erase, move objects, and interact with an assistive communication tile board —
+all **without touching the screen**.
+
+Designed for classrooms, accessibility support, and touch-free interaction.
 
 ---
 
-## 🎯 Weekly Goal (Nov 10 – Nov 17)
+# 📌 Latest Weekly Update (Nov 10 – Nov 17)
 
-Focus: Build and validate the **gesture → tile → intent → speech** pipeline.
+### **Goal:**
 
-**Tasks**
-1. Finalize mapping for 6–10 gesture-controlled tiles.  
-2. Integrate AWS **Bedrock** for intent-to-sentence generation.  
-3. Add **text-to-speech** with AWS **Polly** or local TTS.  
-4. Demonstrate full flow:  
-   *Write → select tile → generate polite sentence → speech output.*  
-5. Record a short demo video showing complete interaction.
+Build and validate the **gesture → tile → intent → speech** pipeline.
 
----
+### **This Week’s Targets**
 
-## 🧠 Core Components
-
-| Component | Description |
-|------------|-------------|
-| **Virtual Board System** | Real-time hand tracking via webcam using OpenCV. |
-| **Gesture Recognition Engine** | YOLOv2 + VGGNet models for fingertip and gesture classification. |
-| **Interactive Tiles** | Accessible UI section with customizable communication tiles. |
-| **AI Response Layer** | AWS Bedrock LLM + Polly for text generation and speech. |
-| **Hybrid Architecture** | Runs locally for speed, uses cloud only for AI text and speech. |
+* Finalize mapping for **6–10 tiles** (Water, Help, Pain, etc.)
+* Connect gesture engine output into backend `/video_feed`.
+* Integrate AWS **Bedrock** (intent → sentence).
+* Add **TTS** using AWS **Polly** or a local engine.
+* UI should show:
+  **Write → Select Tile → Generate Sentence → Speak Output**
+* Prepare a short end-to-end demo video.
 
 ---
 
-## ⚙️ Tech Stack
+# 🧠 Core System Components
 
-**Languages & Libs:** Python 3.11, OpenCV, NumPy, PyTorch, TensorFlow  
-**Frameworks:** Flask / Streamlit, Docker  
-**Cloud Services:** AWS ECS, S3, Bedrock, Polly, CloudWatch  
-**CI/CD:** GitHub Actions
+### **1. Virtual Board System**
+
+* Real-time drawing surface controlled by fingertip.
+* Supports: **write, erase, move, clear**.
+* Fully local with OpenCV processing.
+
+### **2. Gesture Recognition Engine**
+
+* **YOLOv2** detects hand region.
+* **VGGNet** identifies fingertip and gesture type.
+* Outputs:
+
+  * fingertip coordinates
+  * gesture label (write/erase/move/clear)
+
+### **3. Assistive Tiles**
+
+* Tile panel for communication.
+* When the user holds their fingertip on a tile:
+  → tile is selected
+  → intent is generated
+
+### **4. AI Response Layer (Cloud + Local Hybrid)**
+
+* Input: Tile intent (e.g., “thirsty”).
+* AWS **Bedrock LLM** (planned):
+  Converts intent → full polite sentence.
+* AWS **Polly** or local TTS:
+  Converts sentence → spoken audio.
+
+### **5. Hybrid Architecture**
+
+* **Local**: camera, gesture engine, board, tiles
+* **Cloud**: only AI text and speech
+* Reduces latency and protects privacy
 
 ---
 
-## 🚀 Vision
+# ⚙️ Tech Stack
 
-> *“Write in the air. Speak with gestures. Cloud-Ink brings touch-free interaction and accessibility into everyday digital spaces.”*
+### **Languages & Libraries**
+
+* Python 3.11
+* OpenCV
+* NumPy
+* PyTorch (YOLOv2 / VGGNet)
+
+### **Backend**
+
+* Flask or FastAPI
+* Local API endpoints:
+  `/video_feed`, `/tiles`, `/select_tile`, `/health`
+
+### **Frontend**
+
+* HTML / JS
+* Streamlit or web-based UI
+* Figma design reference
+
+### **Cloud Services (Planned)**
+
+* AWS ECS (deployment)
+* AWS S3 (session logs / assets)
+* AWS Bedrock (intent → sentence)
+* AWS Polly (speech output)
+* CloudWatch (monitoring)
+
+### **DevOps**
+
+* Docker
+* GitHub Actions (CI/CD)
 
 ---
 
-## 👥 Team Roles
+# 👥 Team Roles (Updated)
 
-| Name | Role | Key Responsibilities |
-|------|------|-----------------------|
-| **Kotireddy Baddam** | Cloud Engineer | Cloud setup, AWS Bedrock + Polly integration, deployment. |
-| **Trishal Varma Mudunuri** | Full Stack Developer | UI & frontend integration with backend gesture logic. |
-| **Sujith Reddy Yanamala** | System Developer | Hand/fingertip detection using OpenCV + YOLO pipeline. |
-| **Mohammad Abdul Basith** | Support Engineer | Testing, debugging, documentation, and quality control. |
+| Name                       | Role             | Responsibilities                                                                        |
+| -------------------------- | ---------------- | --------------------------------------------------------------------------------------- |
+| **Kotireddy Baddam**       | Cloud Engineer   | Cloud integration (Bedrock, Polly), backend API, deployment workflow, architecture.     |
+| **Trishal Varma Mudunuri** | Full Stack Dev   | UI building, frontend-backend wiring, tile selection interface, Figma → implementation. |
+| **Sujith Reddy Yanamala**  | System Developer | YOLOv2 + VGGNet detection pipeline, gesture mapping, fingertip tracking stability.      |
+| **Mohammad Abdul Basith**  | Support / QA     | Tile mapping, testing endpoints, documentation, verifying interaction flow.             |
+
+---
+
+# 🚀 Vision
+
+> **“Write in the air. Speak with gestures.
+> Cloud-Ink brings touch-free interaction and accessibility into everyday digital spaces.”**
 
 ---
 
